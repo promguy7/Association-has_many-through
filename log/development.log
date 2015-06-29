@@ -1,0 +1,57 @@
+  [1m[36m (113.0ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [1m[35m (109.0ms)[0m  CREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Migrating to CreateDoctors (20150626114530)
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36m (3.0ms)[0m  [1mCREATE TABLE "doctors" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "title" varchar(255), "address" text, "created_at" datetime, "updated_at" datetime) [0m
+  [1m[35mSQL (1.0ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20150626114530"]]
+  [1m[36m (103.0ms)[0m  [1mcommit transaction[0m
+Migrating to CreatePatients (20150626114601)
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36m (2.0ms)[0m  [1mCREATE TABLE "patients" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "title" varchar(255), "address" text, "created_at" datetime, "updated_at" datetime) [0m
+  [1m[35mSQL (0.0ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20150626114601"]]
+  [1m[36m (104.0ms)[0m  [1mcommit transaction[0m
+Migrating to CreateApplications (20150626114618)
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36m (2.0ms)[0m  [1mCREATE TABLE "applications" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "date_time" datetime, "doctor_id" integer, "patient_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [1m[35m (0.0ms)[0m  CREATE INDEX "index_applications_on_doctor_id" ON "applications" ("doctor_id")
+  [1m[36m (0.0ms)[0m  [1mCREATE INDEX "index_applications_on_patient_id" ON "applications" ("patient_id")[0m
+  [1m[35mSQL (1.0ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20150626114618"]]
+  [1m[36m (120.0ms)[0m  [1mcommit transaction[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.0ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36mDoctor Load (1.0ms)[0m  [1mSELECT "doctors".* FROM "doctors" WHERE "doctors"."name" = 'Doc1' LIMIT 1[0m
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36mSQL (118.0ms)[0m  [1mINSERT INTO "doctors" ("created_at", "name", "updated_at") VALUES (?, ?, ?)[0m  [["created_at", Mon, 29 Jun 2015 11:51:06 UTC +00:00], ["name", "Doc1"], ["updated_at", Mon, 29 Jun 2015 11:51:06 UTC +00:00]]
+  [1m[35m (124.0ms)[0m  commit transaction
+  [1m[36mDoctor Load (0.0ms)[0m  [1mSELECT "doctors".* FROM "doctors" WHERE "doctors"."name" = 'Doc1' LIMIT 1[0m
+  [1m[35mDoctor Load (1.0ms)[0m  SELECT "doctors".* FROM "doctors" WHERE "doctors"."name" = 'Doc1' LIMIT 1
+  [1m[36mPatient Load (0.0ms)[0m  [1mSELECT "patients".* FROM "patients" WHERE "patients"."name" = 'Pat1' LIMIT 1[0m
+  [1m[35m (1.0ms)[0m  begin transaction
+  [1m[36mSQL (3.0ms)[0m  [1mINSERT INTO "patients" ("created_at", "name", "updated_at") VALUES (?, ?, ?)[0m  [["created_at", Mon, 29 Jun 2015 11:52:08 UTC +00:00], ["name", "Pat1"], ["updated_at", Mon, 29 Jun 2015 11:52:08 UTC +00:00]]
+  [1m[35m (158.0ms)[0m  commit transaction
+  [1m[36mApplication Load (0.0ms)[0m  [1mSELECT "applications".* FROM "applications" WHERE "applications"."patient_id" = ? AND "applications"."date_time" = 'Time.now()' LIMIT 1[0m  [["patient_id", 1]]
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36mSQL (3.0ms)[0m  [1mINSERT INTO "applications" ("created_at", "patient_id", "updated_at") VALUES (?, ?, ?)[0m  [["created_at", Mon, 29 Jun 2015 11:54:15 UTC +00:00], ["patient_id", 1], ["updated_at", Mon, 29 Jun 2015 11:54:15 UTC +00:00]]
+  [1m[35m (228.0ms)[0m  commit transaction
+  [1m[36mApplication Load (1.0ms)[0m  [1mSELECT "applications".* FROM "applications" WHERE "applications"."patient_id" = ? AND "applications"."doctor_id" = 1 LIMIT 1[0m  [["patient_id", 1]]
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36mSQL (2.0ms)[0m  [1mINSERT INTO "applications" ("created_at", "doctor_id", "patient_id", "updated_at") VALUES (?, ?, ?, ?)[0m  [["created_at", Mon, 29 Jun 2015 11:55:34 UTC +00:00], ["doctor_id", 1], ["patient_id", 1], ["updated_at", Mon, 29 Jun 2015 11:55:34 UTC +00:00]]
+  [1m[35m (134.0ms)[0m  commit transaction
+  [1m[36mApplication Load (0.0ms)[0m  [1mSELECT "applications".* FROM "applications" WHERE "applications"."patient_id" = ?[0m  [["patient_id", 1]]
+  [1m[35mApplication Load (0.0ms)[0m  SELECT "applications".* FROM "applications" WHERE "applications"."patient_id" = ? AND "applications"."doctor_id" = 1 AND "applications"."date_time" = 'Time.now()' LIMIT 1  [["patient_id", 1]]
+  [1m[36m (0.0ms)[0m  [1mbegin transaction[0m
+  [1m[35mSQL (3.0ms)[0m  INSERT INTO "applications" ("created_at", "doctor_id", "patient_id", "updated_at") VALUES (?, ?, ?, ?)  [["created_at", Mon, 29 Jun 2015 12:01:44 UTC +00:00], ["doctor_id", 1], ["patient_id", 1], ["updated_at", Mon, 29 Jun 2015 12:01:44 UTC +00:00]]
+  [1m[36m (117.0ms)[0m  [1mcommit transaction[0m
+  [1m[35mApplication Load (19.0ms)[0m  SELECT "applications".* FROM "applications" WHERE "applications"."patient_id" = ? AND "applications"."doctor_id" = 1 AND "applications"."datetime" = 'Time.now()' LIMIT 1  [["patient_id", 1]]
+SQLite3::SQLException: no such column: applications.datetime: SELECT  "applications".* FROM "applications"  WHERE "applications"."patient_id" = ? AND "applications"."doctor_id" = 1 AND "applications"."datetime" = 'Time.now()' LIMIT 1
+  [1m[36mApplication Load (0.0ms)[0m  [1mSELECT "applications".* FROM "applications" WHERE "applications"."patient_id" = ? AND "applications"."doctor_id" = 1 AND "applications"."datetime" = '2015-06-29 12:02:47.558677' LIMIT 1[0m  [["patient_id", 1]]
+SQLite3::SQLException: no such column: applications.datetime: SELECT  "applications".* FROM "applications"  WHERE "applications"."patient_id" = ? AND "applications"."doctor_id" = 1 AND "applications"."datetime" = '2015-06-29 12:02:47.558677' LIMIT 1
+  [1m[35mApplication Load (1.0ms)[0m  SELECT "applications".* FROM "applications" WHERE "applications"."patient_id" = ? AND "applications"."doctor_id" = 1 AND "applications"."datetime" = '#{Time.now()}' LIMIT 1  [["patient_id", 1]]
+SQLite3::SQLException: no such column: applications.datetime: SELECT  "applications".* FROM "applications"  WHERE "applications"."patient_id" = ? AND "applications"."doctor_id" = 1 AND "applications"."datetime" = '#{Time.now()}' LIMIT 1
+  [1m[36mApplication Load (0.0ms)[0m  [1mSELECT "applications".* FROM "applications" WHERE "applications"."patient_id" = ? AND "applications"."doctor_id" = 1 AND "applications"."datetime" = '2015-06-29 17:33:14 +0530' LIMIT 1[0m  [["patient_id", 1]]
+SQLite3::SQLException: no such column: applications.datetime: SELECT  "applications".* FROM "applications"  WHERE "applications"."patient_id" = ? AND "applications"."doctor_id" = 1 AND "applications"."datetime" = '2015-06-29 17:33:14 +0530' LIMIT 1
+  [1m[35mDoctor Load (0.0ms)[0m  SELECT "doctors".* FROM "doctors" WHERE "doctors"."name" = 'Doc1' LIMIT 1
+  [1m[36mPatient Load (0.0ms)[0m  [1mSELECT "patients".* FROM "patients" WHERE "patients"."name" = 'Pat1' LIMIT 1[0m
+  [1m[35mApplication Load (0.0ms)[0m  SELECT "applications".* FROM "applications" WHERE "applications"."doctor_id" = ? AND "applications"."patient" IS NULL LIMIT 1  [["doctor_id", 1]]
+SQLite3::SQLException: no such column: applications.patient: SELECT  "applications".* FROM "applications"  WHERE "applications"."doctor_id" = ? AND "applications"."patient" IS NULL LIMIT 1
+  [1m[36mApplication Load (0.0ms)[0m  [1mSELECT "applications".* FROM "applications" WHERE "applications"."doctor_id" = ? AND "applications"."patient_id" = 1 LIMIT 1[0m  [["doctor_id", 1]]
