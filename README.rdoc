@@ -1,28 +1,38 @@
-== README
+					NOTES :
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Rails 4.1.8 ruby 2.0.0
+Follow the Steps to Learn
 
-Things you may want to cover:
+3.has_many:through
 
-* Ruby version
+1.
+http://blog.teamtreehouse.com/what-is-a-has_many-through-association-in-ruby-on-rails-treehouse-quick-tip
+rails generate scaffold Doctor name:string title:string address:text
+ rails generate scaffold Patient name:string title:string address:text
+rails generate model Application date_time:datetime doctor:references patient:references
 
-* System dependencies
+class Doctor < ActiveRecord::Base
+    has_many :applications
+    has_many :patients , through: :applications 
+end
 
-* Configuration
+class Patient < ActiveRecord::Base
+    has_many :applications
+    has_many :doctors , through: :applications
+end
 
-* Database creation
+class Application < ActiveRecord::Base
+  belongs_to :doctor
+  belongs_to :patient
+end
 
-* Database initialization
+QUERIES:
+@doc=Doctor.find_or_create_by(name: 'Doc1')
+@pat=Patient.find_or_create_by(name: 'Pat1')
+@pat.applications.find_or_create_by(doctor: @doc)
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+irb(main):043:0> @pat.applications
+  Application Load (0.0ms)  SELECT "applications".* FROM "applications" WHERE "applications"."patient_id" = ?  [["patient_id", 1]
+#<Application id: 2, date_time: nil, doctor_id: 1, patient_id: 1, crea
+ed_at: "2015-06-29 11:55:34", updated_at: "2015-06-29 11:55:34">]>
+irb(main):044:0>
